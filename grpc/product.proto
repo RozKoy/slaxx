@@ -34,7 +34,6 @@ message ProductOneReq {
     int32 id = 1;
 }
 message ProductOneRes {
-    string msg = 1;
     Product product = 2;
 }
 
