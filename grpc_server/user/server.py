@@ -2,45 +2,49 @@ import time
 import grpc
 import logging
 import traceback
-import product_pb2
-import product_pb2_grpc
+import user_pb2
+import user_pb2_grpc
 from concurrent import futures
 from database.config import engine
 from sqlalchemy import insert, text, values, select, update, delete, desc
 
-from model.product import Product
+from model.user import User
 
-class ProductService (product_pb2_grpc.ProductServiceServicer):
+class UserService (user_pb2_grpc.UserServiceServicer):
     def create (self, request, context):
         try:
             with engine.connect() as db:
                 db.begin()
                 response = db.execute(
-                    insert(Product).values(
-                        name = request.name, 
-                        image = request.image,
-                        price = request.price,
-                        stock = request.stock
+                    insert(User).values(
+                        role = request.role,
+                        name = request.name,
+                        email = request.email,
+                        address = request.address,
+                        password = request.password,
+                        phone_number = request.phone_number
                     )
                 )
                 db.commit()
 
                 if response is None:
                     context.set_code(grpc.StatusCode.ALREADY_EXISTS)
-                    return product_pb2.ProductCreateRes(
-                        product = None,
-                        msg = "Gagal Menambahkan Produk"
+                    return user_pb2.UserCreateRes(
+                        user = None,
+                        msg = "Gagal Menambahkan Pengguna"
                     )
                     
-                return product_pb2.ProductCreateRes(
-                    product = product_pb2.Product(
+                return user_pb2.UserCreateRes(
+                    user = user_pb2.User(
+                        role = request.role,
                         name = request.name,
-                        image = request.image,
-                        price = request.price,
-                        stock = request.stock,
+                        email = request.email,
+                        address = request.address,
+                        password = request.password,
+                        phone_number = request.phone_number,
                         id = response.inserted_primary_key_rows[0][0],
                     ),
-                    msg = "Berhasil Menambahkan Produk"
+                    msg = "Berhasil Menambahkan Pengguna"
                 )
         except Exception as e:
             print(e)
@@ -52,25 +56,27 @@ class ProductService (product_pb2_grpc.ProductServiceServicer):
         try:
             with engine.connect() as db:
                 response = db.execute(
-                    select(Product).order_by(desc(Product.id))
+                    select(User).order_by(desc(User.id))
                 )
-                product = []
+                users = []
                 
                 for row in response:
-                    product.append(
-                        product_pb2.Product(
+                    users.append(
+                        user_pb2.User(
                             id = row[0],
-                            price= row[1],
-                            stock= row[2],
-                            name= row[3],
-                            image= row[4],
+                            role = row[1],
+                            name = row[2],
+                            email = row[3],
+                            address = row[4],
+                            password = row[5],
+                            phone_number = row[6],
                         )
                     )
-                return product_pb2.ProductAllRes(
-                    product = product,
-                    msg = "Berhasil Mendapatkan Daftar Produk"
+                return user_pb2.UserAllRes(
+                    user = users,
+                    msg = "Berhasil Mendapatkan Daftar Pengguna"
                 )
-                
+
         except Exception as e:
             print(e)
             print(traceback.format_exc())
@@ -81,24 +87,26 @@ class ProductService (product_pb2_grpc.ProductServiceServicer):
         try:
             with engine.connect() as conn:
                 response = conn.execute(
-                    select(Product).where(Product.id == request.id)
+                    select(User).where(User.id == request.id)
                 ).first()
                 
                 conn.commit()
 
                 if response is None:
                     context.set_code(grpc.StatusCode.NOT_FOUND)
-                    return product_pb2.ProductOneRes(
-                        product = None,
+                    return user_pb2.UserOneRes(
+                        user = None,
                     )
 
-                return product_pb2.ProductOneRes(
-                    product = product_pb2.Product(
+                return user_pb2.UserOneRes(
+                    user = user_pb2.User(
                         id = response[0],
-                        price = response[1],
-                        stock = response[2],
-                        name = response[3],
-                        image = response[4],
+                        role = response[1],
+                        name = response[2],
+                        email = response[3],
+                        address = response[4],
+                        password = response[5],
+                        phone_number = response[6],
                     )
                 )
         except Exception as e:
@@ -112,31 +120,35 @@ class ProductService (product_pb2_grpc.ProductServiceServicer):
             with engine.connect() as db:
                 db.begin()
                 response = db.execute(
-                    update(Product)
-                    .where(Product.id == request.id)
+                    update(User)
+                    .where(User.id == request.id)
                     .values(
+                        role = request.role,
                         name = request.name,
-                        image = request.image,
-                        price = request.price,
-                        stock = request.stock,
+                        email = request.email,
+                        address = request.address,
+                        password = request.password,
+                        phone_number = request.phone_number
                     )
                 )
                 db.commit()
 
                 if response is None:
                     context.set_code(grpc.StatusCode.NOT_FOUND)
-                    return product_pb2.ProductUpdateRes(
-                        product = None,
-                        msg = "Gagal Memperbaharui Produk"
+                    return user_pb2.UserUpdateRes(
+                        user = None,
+                        msg = "Gagal Memperbaharui User"
                     )
 
-                return product_pb2.ProductUpdateRes(
-                    product = product_pb2.Product(
+                return user_pb2.UserUpdateRes(
+                    user = user_pb2.User(
                         id = request.id,
+                        role = request.role,
                         name = request.name,
-                        image = request.image,
-                        price = request.price,
-                        stock = request.stock,
+                        email = request.email,
+                        address = request.address,
+                        password = request.password,
+                        phone_number = request.phone_number
                     )
                 )
         except Exception as e:
@@ -150,15 +162,15 @@ class ProductService (product_pb2_grpc.ProductServiceServicer):
             with engine.connect() as db:
                 db.begin()
                 response = db.execute(
-                    delete(Product).where(Product.id == request.id)
+                    delete(User).where(User.id == request.id)
                 )
                 db.commit()
 
                 if response is None:
                     context.set_code(grpc.StatusCode.NOT_FOUND)
-                    return product_pb2.ProductDeleteRes(msg = "Gagal Menghapus Produk")
+                    return user_pb2.UserDeleteRes(msg = "Gagal Menghapus User")
 
-                return product_pb2.ProductDeleteRes(msg = "Berhasil Menghapus Produk")
+                return user_pb2.UserDeleteRes(msg = "Berhasil Menghapus User")
         except Exception as e:
             print(e)
             print(traceback.format_exc())
@@ -167,10 +179,10 @@ class ProductService (product_pb2_grpc.ProductServiceServicer):
 
 def serve ():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-    product_pb2_grpc.add_ProductServiceServicer_to_server(ProductService(), server)
-    server.add_insecure_port("localhost:5005")
+    user_pb2_grpc.add_UserServiceServicer_to_server(UserService(), server)
+    server.add_insecure_port("localhost:5006")
     server.start()
-    print("Server started, listening on 5005")
+    print("Server started, listening on 5006")
     server.wait_for_termination()
 
 if __name__ == "__main__":
