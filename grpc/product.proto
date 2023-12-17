@@ -1,0 +1,67 @@
+syntax = "proto3";
+
+package product;
+
+message Product {
+    int32 id = 1;
+    int32 price = 2;
+    int32 stock = 3;
+    string name = 4;
+    string image = 5;
+}
+
+
+message ProductCreateReq {
+    int32 price = 1;
+    int32 stock = 2;
+    string name = 3;
+    string image = 4;
+}
+message ProductCreateRes {
+    string msg = 1;
+    Product product = 2;
+}
+
+message ProductAllReq {
+    
+}
+message ProductAllRes {
+    string msg = 1;
+    repeated Product product = 2;
+}
+
+message ProductOneReq {
+    int32 id = 1;
+}
+message ProductOneRes {
+    string msg = 1;
+    Product product = 2;
+}
+
+message ProductUpdateReq {
+    int32 id = 1;
+    int32 price = 2;
+    int32 stock = 3;
+    string name = 4;
+    string image = 5;
+}
+message ProductUpdateRes {
+    string msg = 1;
+    Product product = 2;
+}
+
+message ProductDeleteReq {
+    int32 id = 1;
+}
+message ProductDeleteRes {
+    string msg = 1;
+}
+
+
+service ProductService {
+    rpc create (ProductCreateReq) returns (ProductCreateRes);
+    rpc readAll (ProductAllReq) returns (ProductAllRes);
+    rpc readOne (ProductOneReq) returns (ProductOneRes);
+    rpc update (ProductUpdateReq) returns (ProductUpdateRes);
+    rpc delete (ProductDeleteReq) returns (ProductDeleteRes);
+}

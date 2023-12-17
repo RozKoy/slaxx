@@ -12,3 +12,13 @@ python -m venv env
 
 # deactivate root env
 ./env/Scripts/deactivate.bat
+
+
+# setup grpc server
+cd grpc_server
+
+
+python -m venv ./product/env
+./product/env/Scripts/activate.bat
+./product/env/Scripts/pip install -e ./product
+./product/env/Scripts/deactivate.bat
