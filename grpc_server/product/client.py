@@ -48,9 +48,9 @@ class ProductClient:
             for product in response.product
         ]
     
-    def readOne (self, id):
+    def one_product (self, id):
         response = self.stub.readOne(
-            product_pb2.ProductOneReq(id = id)
+            product_pb2.ProductOneReq(id = int(id))
         )
         
         if response.product is None:
@@ -112,7 +112,7 @@ if __name__ == "__main__":
             print(item)
         elif choice == 2:
             id = int(input("Enter item id: "))
-            item = ProductClient().readOne(id)
+            item = ProductClient().one_product(int(id))
             print(item)
         elif choice == 3:
             name = input("Enter item name: ")

@@ -51,11 +51,25 @@ class ProductService (product_pb2_grpc.ProductServiceServicer):
     def readAll (self, request, context):
         try:
             with engine.connect() as db:
-                response = conn.execute(
+                response = db.execute(
                     select(Product).order_by(desc(Product.id))
                 )
-                print(response)
-                return None
+                product = []
+                
+                for row in response:
+                    product.append(
+                        product_pb2.Product(
+                            id = row[0],
+                            price= row[1],
+                            stock= row[2],
+                            name= row[3],
+                            image= row[4],
+                        )
+                    )
+                return product_pb2.ProductAllRes(
+                    product = product,
+                    msg = "Berhasil Mendapatkan Daftar Produk"
+                )
 
                 # products = [
                 #     product_pb2.Product(
@@ -84,13 +98,13 @@ class ProductService (product_pb2_grpc.ProductServiceServicer):
                 response = conn.execute(
                     select(Product).where(Product.id == request.id)
                 ).first()
+                
                 conn.commit()
 
                 if response is None:
                     context.set_code(grpc.StatusCode.NOT_FOUND)
                     return product_pb2.ProductOneRes(
                         product = None,
-                        msg = "Gagal Mendapatkan Produk"
                     )
 
                 return product_pb2.ProductOneRes(
