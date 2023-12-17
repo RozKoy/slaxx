@@ -32,3 +32,8 @@ python -m venv ./order/env
 ./order/env/Scripts/activate.bat
 ./order/env/Scripts/pip install -e ./order
 ./order/env/Scripts/deactivate.bat
+
+python -m venv ./orderlist/env
+./orderlist/env/Scripts/activate.bat
+./orderlist/env/Scripts/pip install -e ./orderlist
+./orderlist/env/Scripts/deactivate.bat

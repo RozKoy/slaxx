@@ -12,3 +12,6 @@ python -m venv env
 
 # generate grpc order
 ./env/Scripts/python -m grpc_tools.protoc -I./grpc --python_out=./grpc_server/order --pyi_out=./grpc_server/order --grpc_python_out=./grpc_server/order ./grpc/order.proto
+
+# generate grpc orderlist
+./env/Scripts/python -m grpc_tools.protoc -I./grpc --python_out=./grpc_server/orderlist --pyi_out=./grpc_server/orderlist --grpc_python_out=./grpc_server/orderlist ./grpc/orderlist.proto

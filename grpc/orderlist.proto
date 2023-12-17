@@ -1,0 +1,65 @@
+syntax = "proto3";
+
+package orderlist;
+
+message Orderlist {
+	int32 id = 1;
+	int32 quantity = 2;
+	int32 price_count = 3;
+	int32 orderId = 4;
+	int32 productId = 5;
+}
+
+message OrderlistCreateReq {
+	int32 quantity = 2;
+	int32 price_count = 3;
+	int32 orderId = 4;
+	int32 productId = 5;
+}
+message OrderlistCreateRes {
+	string msg = 1;
+	Orderlist orderlist = 2;
+}
+
+message OrderlistAllReq {
+    
+}
+message OrderlistAllRes {
+	string msg = 1;
+	repeated Orderlist orderlist = 2;
+}
+
+message OrderlistOneReq {
+	int32 id = 1;
+}
+message OrderlistOneRes {
+	Orderlist orderlist = 2;
+}
+
+message OrderlistUpdateReq {
+	int32 id = 1;
+	int32 quantity = 2;
+	int32 price_count = 3;
+	int32 orderId = 4;
+	int32 productId = 5;
+}
+message OrderlistUpdateRes {
+	string msg = 1;
+	Orderlist orderlist = 2;
+}
+
+message OrderlistDeleteReq {
+	int32 id = 1;
+}
+message OrderlistDeleteRes {
+	string msg = 1;
+}
+
+
+service OrderlistService {
+	rpc create (OrderlistCreateReq) returns (OrderlistCreateRes);
+	rpc readAll (OrderlistAllReq) returns (OrderlistAllRes);
+	rpc readOne (OrderlistOneReq) returns (OrderlistOneRes);
+	rpc update (OrderlistUpdateReq) returns (OrderlistUpdateRes);
+	rpc delete (OrderlistDeleteReq) returns (OrderlistDeleteRes);
+}
