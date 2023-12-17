@@ -1,0 +1,67 @@
+syntax = "proto3";
+
+package order;
+
+message Order {
+	int32 id = 1;
+	string status = 2;
+	int32 item_count = 3;
+	int32 price_count = 4;
+	string create_at = 5;
+	int32 customerId = 6;
+}
+
+message OrderCreateReq {
+	string status = 1;
+	int32 item_count = 2;
+	int32 price_count = 3;
+	string create_at = 4;
+	int32 customerId = 5;
+}
+message OrderCreateRes {
+	string msg = 1;
+	Order order = 2;
+}
+
+message OrderAllReq {
+    
+}
+message OrderAllRes {
+	string msg = 1;
+	repeated Order order = 2;
+}
+
+message OrderOneReq {
+	int32 id = 1;
+}
+message OrderOneRes {
+	Order order = 2;
+}
+
+message OrderUpdateReq {
+	int32 id = 1;
+	string status = 2;
+	int32 item_count = 3;
+	int32 price_count = 4;
+	int32 customerId = 5;
+}
+message OrderUpdateRes {
+	string msg = 1;
+	Order order = 2;
+}
+
+message OrderDeleteReq {
+	int32 id = 1;
+}
+message OrderDeleteRes {
+	string msg = 1;
+}
+
+
+service OrderService {
+	rpc create (OrderCreateReq) returns (OrderCreateRes);
+	rpc readAll (OrderAllReq) returns (OrderAllRes);
+	rpc readOne (OrderOneReq) returns (OrderOneRes);
+	rpc update (OrderUpdateReq) returns (OrderUpdateRes);
+	rpc delete (OrderDeleteReq) returns (OrderDeleteRes);
+}

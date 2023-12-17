@@ -27,3 +27,8 @@ python -m venv ./user/env
 ./user/env/Scripts/activate.bat
 ./user/env/Scripts/pip install -e ./user
 ./user/env/Scripts/deactivate.bat
+
+python -m venv ./order/env
+./order/env/Scripts/activate.bat
+./order/env/Scripts/pip install -e ./order
+./order/env/Scripts/deactivate.bat
