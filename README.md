@@ -1,30 +1,44 @@
-# PWL_Slaxx_Backend
-Slaxx API
+# Slaxx RESTFUL API
+**Slaxx RESTFUL API** - Application Programming Interface for slaxx clothes commerce. Create, Read, Update and Delete process for Product and User
 
-# How to run
+## Dependencies
+- **`Python > v3.8`**
+
+- **`JavaScript@latest`**
+
+- **`Nodemon`**
+
+## How to run
 - Clone this repository
-  
-### Clone This Repository
 
-Clone this repository on your computer through your computer's terminal by running the following command:
-
+```
 git clone https://github.com/RozKoy/slaxx.git
+```
 
-Wait until the clone process is complete to proceed with the directory change step through your computer’s terminal.
+- open slaxx directory
 
-Wait until your computer has finished the compilation process and opens a tab in your default browser.
+```
+cd slaxx
+```
 
-# Cara Menjalankan
-1. Jalanin setup.sh
-2. jalanin setup_grpc.sh
-3. jalanin setup_rest.sh
-4. Jalanin semua server dengan perintah
-   a) nodemon --exec ./env/Scripts/python server.py
-5. Jalanin pyramid dengan perintah ngrok http --domain=ruling-quetzal-noticeably.ngrok-free.app 6543
+- make database with name `slaxx`
 
-# Kebutuhan Sistem 
-1. Python
-2. node js
+- run setup
 
-## Author
-PWL_Kelompok14_Slaxx
+```
+./setup.sh
+./setup_grpc.sh
+./setup_rest.sh
+```
+
+- run all server, folder: /grpc_server/**/
+
+```
+nodemon --exec ./env/Scripts/python server.py
+```
+
+- run pyramid framework in folder /rest/
+
+```
+ngrok http --domain=ruling-quetzal-noticeably.ngrok-free.app 6543
+```
